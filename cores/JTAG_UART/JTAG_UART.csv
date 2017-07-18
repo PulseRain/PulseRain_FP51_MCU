@@ -1,0 +1,22 @@
+# system info JTAG_UART on 2017.07.16.17:25:16
+system_info:
+name,value
+DEVICE,10M08SAE144C8G
+DEVICE_FAMILY,MAX 10
+GENERATION_ID,1500251110
+#
+#
+# Files generated for JTAG_UART on 2017.07.16.17:25:16
+files:
+filepath,kind,attributes,module,is_top
+simulation/JTAG_UART.v,VERILOG,,JTAG_UART,true
+simulation/submodules/JTAG_UART_jtag_uart.v,VERILOG,,JTAG_UART_jtag_uart,false
+simulation/submodules/altera_reset_controller.v,VERILOG,,altera_reset_controller,false
+simulation/submodules/altera_reset_synchronizer.v,VERILOG,,altera_reset_controller,false
+simulation/submodules/altera_reset_controller.sdc,SDC,,altera_reset_controller,false
+#
+# Map from instance-path to kind of module
+instances:
+instancePath,module
+JTAG_UART.jtag_uart,JTAG_UART_jtag_uart
+JTAG_UART.rst_controller,altera_reset_controller

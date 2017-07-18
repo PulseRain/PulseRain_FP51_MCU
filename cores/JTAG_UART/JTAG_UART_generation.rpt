@@ -1,0 +1,80 @@
+Info: Starting: Create simulation model
+Info: qsys-generate C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.qsys --simulation=VERILOG --allow-mixed-language-simulation --output-directory=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\simulation --family="MAX 10" --part=10M08SAE144C8G
+Progress: Loading JTAG_UART/JTAG_UART.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 16.1]
+Progress: Parameterizing module clk
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 16.1]
+Progress: Parameterizing module jtag_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: JTAG_UART.jtag_uart: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
+Info: JTAG_UART: Generating JTAG_UART "JTAG_UART" for SIM_VERILOG
+Info: jtag_uart: Starting RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart:   Generation command is [exec C:/intelfpga_lite/16.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/16.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=JTAG_UART_jtag_uart --dir=C:/Users/lenovo/AppData/Local/Temp/alt7364_4797266927699866120.dir/0001_jtag_uart_gen/ --quartus_dir=C:/intelfpga_lite/16.1/quartus --verilog --config=C:/Users/lenovo/AppData/Local/Temp/alt7364_4797266927699866120.dir/0001_jtag_uart_gen//JTAG_UART_jtag_uart_component_configuration.pl  --do_build_sim=1    --sim_dir=C:/Users/lenovo/AppData/Local/Temp/alt7364_4797266927699866120.dir/0001_jtag_uart_gen/  ]
+Info: jtag_uart: Done RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart: "JTAG_UART" instantiated altera_avalon_jtag_uart "jtag_uart"
+Info: rst_controller: "JTAG_UART" instantiated altera_reset_controller "rst_controller"
+Info: JTAG_UART: Done "JTAG_UART" with 3 modules, 5 files
+Info: qsys-generate succeeded.
+Info: Finished: Create simulation model
+Info: Starting: Create Modelsim Project.
+Info: sim-script-gen --spd=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.spd --output-directory=C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ --use-relative-paths=true
+Info: Doing: ip-make-simscript --spd=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.spd --output-directory=C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ --use-relative-paths=true
+Info: Generating the following file(s) for MODELSIM simulator in C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ directory:
+Info: 	mentor/msim_setup.tcl
+Info: Generating the following file(s) for VCS simulator in C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ directory:
+Info: 	synopsys/vcs/vcs_setup.sh
+Info: Generating the following file(s) for VCSMX simulator in C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ directory:
+Info: 	synopsys/vcsmx/synopsys_sim.setup
+Info: 	synopsys/vcsmx/vcsmx_setup.sh
+Info: Generating the following file(s) for NCSIM simulator in C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ directory:
+Info: 	cadence/cds.lib
+Info: 	cadence/hdl.var
+Info: 	cadence/ncsim_setup.sh
+Info: 	2 .cds.lib files in cadence/cds_libs/ directory
+Info: Generating the following file(s) for RIVIERA simulator in C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/ directory:
+Info: 	aldec/rivierapro_setup.tcl
+Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under C:/arc/repo/Mustang/trunk/submodules/PulseRain_FP51_MCU/cores/JTAG_UART/simulation/.
+Info: Regenerate these scripts whenever you make any change to any Quartus-generated IP in your project.
+Info: Finished: Create Modelsim Project.
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.qsys --block-symbol-file --output-directory=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART --family="MAX 10" --part=10M08SAE144C8G
+Progress: Loading JTAG_UART/JTAG_UART.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 16.1]
+Progress: Parameterizing module clk
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 16.1]
+Progress: Parameterizing module jtag_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: JTAG_UART.jtag_uart: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.qsys --synthesis=VERILOG --output-directory=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\synthesis --family="MAX 10" --part=10M08SAE144C8G
+Progress: Loading JTAG_UART/JTAG_UART.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 16.1]
+Progress: Parameterizing module clk
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 16.1]
+Progress: Parameterizing module jtag_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: JTAG_UART.jtag_uart: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
+Info: JTAG_UART: Generating JTAG_UART "JTAG_UART" for QUARTUS_SYNTH
+Info: jtag_uart: Starting RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart:   Generation command is [exec C:/intelfpga_lite/16.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/16.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=JTAG_UART_jtag_uart --dir=C:/Users/lenovo/AppData/Local/Temp/alt7364_4797266927699866120.dir/0004_jtag_uart_gen/ --quartus_dir=C:/intelfpga_lite/16.1/quartus --verilog --config=C:/Users/lenovo/AppData/Local/Temp/alt7364_4797266927699866120.dir/0004_jtag_uart_gen//JTAG_UART_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart: Done RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart: "JTAG_UART" instantiated altera_avalon_jtag_uart "jtag_uart"
+Info: rst_controller: "JTAG_UART" instantiated altera_reset_controller "rst_controller"
+Info: JTAG_UART: Done "JTAG_UART" with 3 modules, 5 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

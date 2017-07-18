@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file
+   path="Altera_unique_chip_ID_sim/altchip_id/altchip_id.v"
+   type="VERILOG"
+   library="Altera_unique_chip_ID" />
+ <file
+   path="Altera_unique_chip_ID_sim/Altera_unique_chip_ID.v"
+   type="VERILOG" />
+ <topLevel name="Altera_unique_chip_ID" />
+ <deviceFamily name="max10" />
+</simPackage>

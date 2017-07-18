@@ -1,0 +1,38 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.qsys --block-symbol-file --output-directory=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART --family="MAX 10" --part=10M08SAE144C8G
+Progress: Loading JTAG_UART/JTAG_UART.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 16.1]
+Progress: Parameterizing module clk
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 16.1]
+Progress: Parameterizing module jtag_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: JTAG_UART.jtag_uart: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\JTAG_UART.qsys --synthesis=VERILOG --output-directory=C:\arc\repo\Mustang\trunk\submodules\PulseRain_FP51_MCU\cores\JTAG_UART\synthesis --family="MAX 10" --part=10M08SAE144C8G
+Progress: Loading JTAG_UART/JTAG_UART.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 16.1]
+Progress: Parameterizing module clk
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 16.1]
+Progress: Parameterizing module jtag_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: JTAG_UART.jtag_uart: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
+Info: JTAG_UART: Generating JTAG_UART "JTAG_UART" for QUARTUS_SYNTH
+Info: jtag_uart: Starting RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart:   Generation command is [exec C:/intelfpga_lite/16.1/quartus/bin64/perl/bin/perl.exe -I C:/intelfpga_lite/16.1/quartus/bin64/perl/lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/europa -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin/perl_lib -I C:/intelfpga_lite/16.1/quartus/sopc_builder/bin -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/common -I C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/intelfpga_lite/16.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=JTAG_UART_jtag_uart --dir=C:/Users/lenovo/AppData/Local/Temp/alt7335_7702963574969489606.dir/0001_jtag_uart_gen/ --quartus_dir=C:/intelfpga_lite/16.1/quartus --verilog --config=C:/Users/lenovo/AppData/Local/Temp/alt7335_7702963574969489606.dir/0001_jtag_uart_gen//JTAG_UART_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart: Done RTL generation for module 'JTAG_UART_jtag_uart'
+Info: jtag_uart: "JTAG_UART" instantiated altera_avalon_jtag_uart "jtag_uart"
+Info: rst_controller: "JTAG_UART" instantiated altera_reset_controller "rst_controller"
+Info: JTAG_UART: Done "JTAG_UART" with 3 modules, 5 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file
+   path="simulation/submodules/altera_reset_controller.v"
+   type="VERILOG"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/altera_reset_synchronizer.v"
+   type="VERILOG"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/altera_reset_controller.sdc"
+   type="SDC"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/JTAG_UART_jtag_uart.v"
+   type="VERILOG"
+   library="jtag_uart" />
+ <file path="simulation/JTAG_UART.v" type="VERILOG" />
+ <topLevel name="JTAG_UART" />
+ <deviceFamily name="max10" />
+</simPackage>
