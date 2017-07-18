@@ -4,3 +4,6 @@
 [submodule "submodules/PulseRain_rtl_lib"]
 	path = submodules/PulseRain_rtl_lib
 	url = https://github.com/PulseRain/PulseRain_rtl_lib.git
+[submodule "submodules/FP51_fast_core"]
+	path = submodules/FP51_fast_core
+	url = https://github.com/PulseRain/FP51_fast_core.git
