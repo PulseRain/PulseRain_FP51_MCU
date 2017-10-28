@@ -114,7 +114,7 @@ extern module FP51_fast_core #(parameter FOR_SIM = 0) (
         
 );
 
-extern module PulseRain_FP51_MCU 
+extern module PulseRain_M10_config_MCU 
         #(parameter FOR_SIM = 0, FAST0_SMALL1 = 0) (
     
     //=======================================================================
@@ -137,7 +137,7 @@ extern module PulseRain_FP51_MCU
         
         output wire                                 inst_mem_re_enable_out,
         output wire unsigned [31 : 0]               inst_mem_data_out,
-                
+        
     //=======================================================================
     // External Interrupt
     //=======================================================================
@@ -149,9 +149,6 @@ extern module PulseRain_FP51_MCU
     //=======================================================================
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
-        
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
         
     //=======================================================================
     // Ports
@@ -165,84 +162,43 @@ extern module PulseRain_FP51_MCU
     // Debug
     //=======================================================================
         
-        
         input wire                                  pause,
         input wire                                  break_on,
         input wire unsigned [PC_BITWIDTH - 1 : 0]   break_addr_A,
         input wire unsigned [PC_BITWIDTH - 1 : 0]   break_addr_B,
+        
         input wire                                  run_pulse,      
-                        
+                                
         output logic                                debug_stall,
         output wire unsigned [PC_BITWIDTH - 1 : 0]  debug_PC,
                 
         input wire                                  debug_data_read,
         input wire                                  debug_rd_indirect1_direct0,
-        input wire unsigned [PC_BITWIDTH - 1 : 0]                debug_data_read_addr,
+        input wire unsigned [PC_BITWIDTH - 1 : 0]   debug_data_read_addr,
         input wire                                  debug_data_read_restore,
         
-        input wire                                              debug_data_write,
-        input wire unsigned [PC_BITWIDTH - 1 : 0]               debug_data_write_addr,
-        input wire unsigned                                     debug_wr_indirect1_direct0,
-        input wire unsigned [DATA_WIDTH - 1 : 0]                debug_data_write_data,
-        
-        
+        input wire                                  debug_data_write,
+        input wire unsigned [PC_BITWIDTH - 1 : 0]   debug_data_write_addr,
+        input wire unsigned                         debug_wr_indirect1_direct0,
+        input wire unsigned [DATA_WIDTH - 1 : 0]    debug_data_write_data,
         
         output wire                                 debug_read_data_enable_out,
         output wire unsigned [DATA_WIDTH - 1 : 0]   debug_read_data_out,
         output wire                                 timer_pulse_out,
+        
         output wire                                 debug_led,
         output wire                                 debug_counter_pulse,
         
-    //=======================================================================
-    // M23XX1024
-    //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
-            
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-            
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,  
-        output  wire                                Si3000_RESET_N, 
+        output  wire                                flash_loader_active_flag,
+        output  wire                                flash_loader_done_flag,
         
-    //=======================================================================
-    // SD Card
-    //=======================================================================
+        output  wire                                flash_loader_ping_busy,
+        output  wire                                flash_loader_pong_busy,
         
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
-    
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
+        output wire  unsigned [1 : 0]               flash_buffer_ping_state,
+        output wire  unsigned [1 : 0]               flash_buffer_pong_state
         
-    //=======================================================================
-    // I2C
-    //=======================================================================
         
-        input wire                                  sda_in, 
-        input wire                                  scl_in,
-        
-        output wire                                 sda_out,
-        output wire                                 scl_out,
-        
-   //=======================================================================
-    // PWM
-    //=======================================================================
-        output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out       
- 
 );
     
     

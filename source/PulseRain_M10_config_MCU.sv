@@ -13,7 +13,7 @@
 # Please contact PulseRain Technology LLC (www.pulserain.com) for more detail.
 #
 ###############################################################################
- */
+*/
 
 
 //=============================================================================
@@ -25,7 +25,7 @@
 `include "peripherals.svh"
 
 `default_nettype none
-module PulseRain_FP51_MCU 
+module PulseRain_M10_config_MCU 
         #(parameter FOR_SIM = 0, FAST0_SMALL1 = 0) (
     
     //=======================================================================
@@ -61,9 +61,6 @@ module PulseRain_FP51_MCU
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
         
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
-        
     //=======================================================================
     // Ports
     //=======================================================================
@@ -88,13 +85,13 @@ module PulseRain_FP51_MCU
                 
         input wire                                  debug_data_read,
         input wire                                  debug_rd_indirect1_direct0,
-        input wire unsigned [PC_BITWIDTH - 1 : 0]                debug_data_read_addr,
+        input wire unsigned [PC_BITWIDTH - 1 : 0]   debug_data_read_addr,
         input wire                                  debug_data_read_restore,
         
-        input wire                                              debug_data_write,
-        input wire unsigned [PC_BITWIDTH - 1 : 0]               debug_data_write_addr,
-        input wire unsigned                                     debug_wr_indirect1_direct0,
-        input wire unsigned [DATA_WIDTH - 1 : 0]                debug_data_write_data,
+        input wire                                  debug_data_write,
+        input wire unsigned [PC_BITWIDTH - 1 : 0]   debug_data_write_addr,
+        input wire unsigned                         debug_wr_indirect1_direct0,
+        input wire unsigned [DATA_WIDTH - 1 : 0]    debug_data_write_data,
         
         output wire                                 debug_read_data_enable_out,
         output wire unsigned [DATA_WIDTH - 1 : 0]   debug_read_data_out,
@@ -103,57 +100,16 @@ module PulseRain_FP51_MCU
         output wire                                 debug_led,
         output wire                                 debug_counter_pulse,
         
-    //=======================================================================
-    // M23XX1024
-    //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
+        output  wire                                flash_loader_active_flag,
+        output  wire                                flash_loader_done_flag,
         
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-            
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,  
-        output  wire                                Si3000_RESET_N,
+        output  wire                                flash_loader_ping_busy,
+        output  wire                                flash_loader_pong_busy,
         
-    //=======================================================================
-    // SD Card
-    //=======================================================================
+        output wire  unsigned [1 : 0]               flash_buffer_ping_state,
+        output wire  unsigned [1 : 0]               flash_buffer_pong_state
         
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
         
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
-        
-    //=======================================================================
-    // I2C
-    //=======================================================================
-        
-        input wire                                  sda_in, 
-        input wire                                  scl_in,
-        
-        output wire                                 sda_out,
-        output wire                                 scl_out,
-        
-    //=======================================================================
-    // PWM
-    //=======================================================================
-        output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out     
-             
-            
 );
 
     //=======================================================================
@@ -177,6 +133,52 @@ module PulseRain_FP51_MCU
         
         wire                                        timer_event_pulse;
         
+        
+        logic                                       mcu_write_enable;
+        logic unsigned [PC_BITWIDTH - 3 : 0]        mcu_write_addr;
+        logic unsigned [31 : 0]                     mcu_write_data;
+        
+        logic                                       flash_buffer_write_enable;
+        logic unsigned [31 : 0]                     flash_buffer_data_in;
+        logic unsigned [FLASH_LOADER_BUFFER_BITS - 1 : 0]        flash_buffer_write_address;
+        
+      
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //  MCU / Flash write
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        
+        always_ff @(posedge clk, negedge reset_n) begin : mux_mcu_flash_proc
+            if (!reset_n) begin
+                mcu_write_enable <= 0;
+                mcu_write_addr   <= 0;
+                mcu_write_data   <= 0;
+                
+                flash_buffer_write_enable  <= 0;
+                flash_buffer_data_in       <= 0;
+                flash_buffer_write_address <= 0;
+                
+            end else begin
+                
+                mcu_write_addr             <= inst_mem_wr_addr [$high(mcu_write_addr) : 0];
+                flash_buffer_write_address <= inst_mem_wr_addr [$high(flash_buffer_write_address) : 0];
+                    
+                mcu_write_data             <= inst_mem_data_in;
+                flash_buffer_data_in       <= inst_mem_data_in;
+                
+                if (inst_mem_we) begin
+                    mcu_write_enable          <= ~inst_mem_wr_addr[$high(inst_mem_wr_addr)];
+                    flash_buffer_write_enable <= inst_mem_wr_addr[$high(inst_mem_wr_addr)];
+                end else begin
+                    mcu_write_enable          <= 0;
+                    flash_buffer_write_enable <= 0;
+                end
+                
+            end
+            
+        end : mux_mcu_flash_proc
+            
+        
+        
     //=======================================================================
     // processor core
     //=======================================================================
@@ -188,9 +190,9 @@ module PulseRain_FP51_MCU
                 
             end else begin : processor_core_gen
                 FP51_fast_core #(.FOR_SIM (FOR_SIM)) fast_core (.*,
-                        .inst_mem_we (inst_mem_we),
-                        .inst_mem_wr_addr (inst_mem_wr_addr),
-                        .inst_mem_data_in (inst_mem_data_in),
+                        .inst_mem_we      (mcu_write_enable),
+                        .inst_mem_wr_addr (mcu_write_addr),
+                        .inst_mem_data_in (mcu_write_data),
                         
                         .inst_mem_re (inst_mem_re),
                         .inst_mem_re_addr (inst_mem_re_addr),
@@ -277,43 +279,25 @@ module PulseRain_FP51_MCU
             .UART_RXD (UART_RXD),
             .UART_TXD (UART_TXD),
             
-            .UART_AUX_RXD (UART_AUX_RXD),
-            .UART_AUX_TXD (UART_AUX_TXD),
-			 
             .debug_led (debug_led),
             .debug_counter_pulse (debug_counter_pulse),
             
-            .mem_so (mem_so),
-            .mem_si (mem_si),
-            .mem_hold_n (mem_hold_n),
-            .mem_cs_n (mem_cs_n),
-            .mem_sck (mem_sck),
+            .flash_buffer_write_enable (flash_buffer_write_enable),
+            .flash_buffer_data_in (flash_buffer_data_in),
+            .flash_buffer_write_address (flash_buffer_write_address),
             
-            .Si3000_SDO (Si3000_SDO),
-            .Si3000_SDI (Si3000_SDI),
-            .Si3000_SCLK (Si3000_SCLK),
-            .Si3000_MCLK (Si3000_MCLK),
-            .Si3000_FSYNC_N (Si3000_FSYNC_N),
-            .Si3000_RESET_N (Si3000_RESET_N),
+            .flash_loader_active_flag (flash_loader_active_flag),
+            .flash_loader_done_flag (flash_loader_done_flag),
             
-            .sd_cs_n     (sd_cs_n),
-            .sd_spi_clk  (sd_spi_clk),
-            .sd_data_out (sd_data_out),
-            .sd_data_in  (sd_data_in),          
+            .flash_loader_ping_busy (flash_loader_ping_busy),
+            .flash_loader_pong_busy (flash_loader_pong_busy),
             
-            .adc_pll_clock_clk (adc_pll_clock_clk),
-            .adc_pll_locked_export (adc_pll_locked_export),
+            .flash_buffer_ping_state_out (flash_buffer_ping_state),
+            .flash_buffer_pong_state_out (flash_buffer_pong_state)
             
-            .sda_in (sda_in),
-            .scl_in (scl_in),
-            
-            .sda_out (sda_out),
-            .scl_out (scl_out),
-            .pwm_out (pwm_out)
-            
-           );
+        );
     
         
-endmodule : PulseRain_FP51_MCU
+endmodule : PulseRain_M10_config_MCU
 
 `default_nettype wire

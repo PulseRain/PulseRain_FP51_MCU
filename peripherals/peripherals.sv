@@ -72,9 +72,6 @@ module peripherals #(parameter FOR_SIM = 0) (
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
         
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
-        
     //=======================================================================
     // Debug LED
     //=======================================================================
@@ -82,57 +79,20 @@ module peripherals #(parameter FOR_SIM = 0) (
         output wire                                 debug_counter_pulse,
         
     //=======================================================================
-    // M23XX1024
+    // Flash Loader
     //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
+        input wire                                      flash_buffer_write_enable,
+        input wire [DATA_WIDTH * 4 - 1 : 0]             flash_buffer_data_in,
+        input wire [FLASH_LOADER_BUFFER_BITS - 1 : 0]   flash_buffer_write_address,
         
+        output  wire                                    flash_loader_active_flag,
+        output  wire                                    flash_loader_done_flag,
         
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-            
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,
-        output  wire                                Si3000_RESET_N,
+        output  wire                                    flash_loader_ping_busy,
+        output  wire                                    flash_loader_pong_busy,
         
-    //=======================================================================
-    // SD Card
-    //=======================================================================
-        
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
-            
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
-        
-        
-    //=======================================================================
-    // I2C
-    //=======================================================================
-        
-        input wire                                   sda_in, 
-        input wire                                   scl_in,
-        
-        output wire                                  sda_out,
-        output wire                                  scl_out,
-        
-    //=======================================================================
-    // PWM
-    //=======================================================================
-        output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     
-        
+        output  wire unsigned [1 : 0]                   flash_buffer_ping_state_out,
+        output  wire unsigned [1 : 0]                   flash_buffer_pong_state_out
 );
     
     //=======================================================================
@@ -145,14 +105,10 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire unsigned [DATA_WIDTH - 1 : 0]          TH0_TL0_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          TH1_TL1_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          uart_reg_data_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          uart_aux_reg_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          debug_counter_led_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          M23XX1024_data_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          Si3000_data_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          ADC_data_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          sd_data; 
+        wire unsigned [DATA_WIDTH - 1 : 0]          flash_loader_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          chip_ID_data_out;
-        wire unsigned [DATA_WIDTH - 1 : 0]          I2C_data_out;
+        
         
         
         wire                                        TMOD_GATE1, TMOD_C_T1, TMOD_T1M1;
@@ -169,7 +125,6 @@ module peripherals #(parameter FOR_SIM = 0) (
         logic  unsigned [NUM_OF_INTx - 1 : 0]       INTx_meta, INTx_sync;
         
         wire                                        SCON_TI, SCON_RI;       
-        wire                                        SCON_AUX_TI, SCON_AUX_RI;       
         
         wire                                        jtag_uart_read_n;
         wire                                        jtag_uart_write_n;
@@ -184,9 +139,6 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire                                        adc_data_ready;
         
         wire                                        codec_fsync_pulse;
-        
-        wire                                        i2c_irq;
-        
     //=======================================================================
     // Output Mux
     //=======================================================================
@@ -235,14 +187,6 @@ module peripherals #(parameter FOR_SIM = 0) (
                     WB_RD_DAT_O = uart_reg_data_out;
                 end
                 
-                SCON_AUX_ADDR : begin
-                    WB_RD_DAT_O = uart_aux_reg_data_out;
-                end
-                
-                SBUF_AUX_ADDR : begin
-                    WB_RD_DAT_O = uart_aux_reg_data_out;
-                end
-                
                 DEBUG_LED_ADDR : begin
                     WB_RD_DAT_O = debug_counter_led_out;
                 end
@@ -251,62 +195,33 @@ module peripherals #(parameter FOR_SIM = 0) (
                     WB_RD_DAT_O = jtag_uart_read_data [7 : 0];
                 end
                 
-                SRAM_DATA_ADDR : begin
-                    WB_RD_DAT_O = M23XX1024_data_out;
-                end
-                
-                SRAM_CSR_ADDR  : begin
-                    WB_RD_DAT_O = M23XX1024_data_out;
-                end
-                
-                ADC_DATA_HIGH_ADDR : begin
-                    WB_RD_DAT_O = ADC_data_out;
-                end
-                
-                ADC_DATA_LOW_ADDR : begin
-                    WB_RD_DAT_O = ADC_data_out;
-                end
-                
-                ADC_CSR_ADDR      : begin
-                    WB_RD_DAT_O = ADC_data_out;
-                end
-                
-                CODEC_READ_DATA_LOW_ADDR : begin
-                    WB_RD_DAT_O = Si3000_data_out;
-                end
-                
-                CODEC_READ_DATA_HIGH_ADDR : begin
-                    WB_RD_DAT_O = Si3000_data_out;
-                end
-                
-                CODEC_CSR_ADDR : begin
-                    WB_RD_DAT_O = Si3000_data_out;
-                end
-                
                 CHIP_ID_DATA_CSR_ADDR : begin
                     WB_RD_DAT_O = chip_ID_data_out;
                 end
                 
-                SD_CMD_ADDR : begin
-                    WB_RD_DAT_O = sd_data;
+                FLASH_LOADER_DATA0_ADDR : begin
+                    WB_RD_DAT_O = flash_loader_data_out;
                 end
                 
-                SD_DATA_IN_ADDR : begin
-                    WB_RD_DAT_O = sd_data;
+                FLASH_LOADER_DATA1_ADDR : begin
+                    WB_RD_DAT_O = flash_loader_data_out;
+                end
+                
+                FLASH_LOADER_DATA2_ADDR : begin
+                    WB_RD_DAT_O = flash_loader_data_out;
+                end
+                
+                FLASH_LOADER_DATA3_ADDR : begin
+                    WB_RD_DAT_O = flash_loader_data_out;
+                end
+                
+                FLASH_LOADER_CSR_ADDR : begin
+                    WB_RD_DAT_O = flash_loader_data_out;
                 end
                 
                 MCU_REVISION_ADDR : begin
                     WB_RD_DAT_O = MCU_REVISION;
                 end
-                
-                I2C_CSR_ADDR : begin
-                    WB_RD_DAT_O = I2C_data_out;
-                end
-                
-                I2C_ADDR_DATA_ADDR : begin
-                    WB_RD_DAT_O = I2C_data_out;
-                end
-                
                 
                 default : begin
                     WB_RD_DAT_O = 0;
@@ -342,7 +257,7 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .dat_o (IP_data_out),
                 .ack_o ());
         
-        
+    
     //=======================================================================
     // TMOD Register
     //=======================================================================
@@ -377,13 +292,13 @@ module peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
     // Timer Unit Pulse
     //=======================================================================
-       /* timer_unit_pulse #(.TIMER_UNIT_PULSE_PERIOD (TIMER_UNIT_CLASSIC_PULSE_PERIOD))
+        timer_unit_pulse #(.TIMER_UNIT_PULSE_PERIOD (TIMER_UNIT_CLASSIC_PULSE_PERIOD))
             timer_unit_pulse_i (.*,
             .unit_period_update (1'b0),
             .unit_period (8'd0),
             .enable (1'b1),
             .unit_pulse (class_8051_unit_pulse));
-        */
+        
     //=======================================================================
     // Timer 0
     //=======================================================================
@@ -398,8 +313,7 @@ module peripherals #(parameter FOR_SIM = 0) (
             .dat_o (TH0_TL0_data_out),
             .ack_o (),
     
-          //==  .class_8051_unit_pulse (class_8051_unit_pulse),
-            .class_8051_unit_pulse (1'b1),
+            .class_8051_unit_pulse (class_8051_unit_pulse),
             
             .TMOD_C_T (TMOD_C_T0),
             .TMOD_M1 (TMOD_T0M1),
@@ -416,12 +330,10 @@ module peripherals #(parameter FOR_SIM = 0) (
           always_ff @(posedge clk, negedge reset_n) begin
                 if (!reset_n) begin
                     timer_pulse_out <= 0;
-                end else if (timer0_trigger) begin
-                    timer_pulse_out <= ~timer_pulse_out;
+                end else begin
+                    timer_pulse_out <= timer0_trigger;
                 end
-          end
-
-   
+          end   
     //=======================================================================
     // Timer 1
     //=======================================================================
@@ -450,31 +362,6 @@ module peripherals #(parameter FOR_SIM = 0) (
             .event_pulse (timer_event_pulse),
             .timer_trigger (timer1_trigger));
         
-          
-    //=======================================================================
-    // AUX Serial Port
-    //=======================================================================
-        wb_Serial_8051
-            #(.STABLE_TIME (UART_STABLE_COUNT), 
-              .MAX_BAUD_PERIOD (MAX_UART_BAUD_RATE), 
-              .REG_ADDR_SCON (SCON_AUX_ADDR), 
-              .REG_ADDR_SBUF (SBUF_AUX_ADDR),
-              .FIFO_SIZE (8)) UART_AUX (.*,
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (uart_aux_reg_data_out),
-                .ack_o (),
-                
-                .class_8051_unit_pulse (class_8051_unit_pulse),
-                .timer_trigger (timer0_trigger),
-                .UART_RXD (UART_AUX_RXD),
-                .UART_TXD (UART_AUX_TXD),
-                .SCON_TI (SCON_AUX_TI),
-                .SCON_RI (SCON_AUX_RI));
-                  
     //=======================================================================
     // Serial Port
     //=======================================================================
@@ -483,7 +370,7 @@ module peripherals #(parameter FOR_SIM = 0) (
               .MAX_BAUD_PERIOD (MAX_UART_BAUD_RATE), 
               .REG_ADDR_SCON (SCON_ADDR), 
               .REG_ADDR_SBUF (SBUF_ADDR),
-              .FIFO_SIZE (4)) UART (.*,
+				  .FIFO_SIZE(UART_FIFO_SIZE)) UART (.*,
                 .stb_i (WB_WR_STB_I),
                 .we_i (WB_WR_WE_I),
                 .adr_wr_i (WB_WR_ADR_I),
@@ -499,111 +386,40 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .SCON_TI (SCON_TI),
                 .SCON_RI (SCON_RI));
     
-    
     //=======================================================================
-    // M23XX1024
+    // Flash Loader
     //=======================================================================
-         wb_M23XX1024 #(.CLK_SCK_RATIO        (SRAM_CLK_SCK_RATIO),
-                        .REG_ADDR_INSTRUCTION (SRAM_INSTRUCTION_ADDR),
-                        .REG_ADDR_DATA        (SRAM_DATA_ADDR),
-                        .REG_ADDR_ADDRESS2    (SRAM_ADDRESS2_ADDR),
-                        .REG_ADDR_ADDRESS1    (SRAM_ADDRESS1_ADDR),
-                        .REG_ADDR_ADDRESS0    (SRAM_ADDRESS0_ADDR),
-                        .REG_ADDR_CSR         (SRAM_CSR_ADDR))  SRAM_i (.*,
-                
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (M23XX1024_data_out),
-                .ack_o (),
-                    
-                .mem_so     (mem_so),
-                .mem_si     (mem_si),
-                .mem_hold_n (mem_hold_n),
-                .mem_cs_n   (mem_cs_n),
-                .mem_sck    (mem_sck)
-            );
             
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-        wb_Si3000 #(.MCLK_DENOM(1), .MCLK_NUMER(24), .WORD_SIZE (16),
-                .REG_ADDR_WRITE_DATA_LOW  (CODEC_WRITE_DATA_LOW_ADDR),
-                .REG_ADDR_WRITE_DATA_HIGH (CODEC_WRITE_DATA_HIGH_ADDR),
-                .REG_ADDR_READ_DATA_LOW  (CODEC_READ_DATA_LOW_ADDR),
-                .REG_ADDR_READ_DATA_HIGH (CODEC_READ_DATA_HIGH_ADDR),
-                .REG_ADDR_CSR (CODEC_CSR_ADDR))  wb_Si3000_i (.*,
-                
+         wb_flash_loader #(.REG_ADDR_DATA0 (FLASH_LOADER_DATA0_ADDR), 
+                           .REG_ADDR_DATA1 (FLASH_LOADER_DATA1_ADDR),
+                           .REG_ADDR_DATA2 (FLASH_LOADER_DATA2_ADDR),
+                           .REG_ADDR_DATA3 (FLASH_LOADER_DATA3_ADDR),
+                           .REG_ADDR_CSR (FLASH_LOADER_CSR_ADDR))
+             wb_flash_loader_i (.*,
+                 
                 .stb_i (WB_WR_STB_I),
                 .we_i (WB_WR_WE_I),
                 .adr_wr_i (WB_WR_ADR_I),
                 .adr_rd_i (WB_RD_ADR_I),
                 .dat_i (WB_WR_DAT_I),
-                .dat_o (Si3000_data_out),
+                .dat_o (flash_loader_data_out),
                 .ack_o (),
                 
-                .fsync_pulse (codec_fsync_pulse),
+        //=======================================================================
+        // flash interface
+        //=======================================================================
+                .flash_buffer_write_enable  (flash_buffer_write_enable),
+                .flash_buffer_data_in       (flash_buffer_data_in),
+                .flash_buffer_write_address (flash_buffer_write_address),
                 
-                .Si3000_SDO     (Si3000_SDO),
-                .Si3000_SDI     (Si3000_SDI),
-                .Si3000_SCLK    (Si3000_SCLK),
-                .Si3000_MCLK    (Si3000_MCLK),
-                .Si3000_FSYNC_N (Si3000_FSYNC_N),
-                .Si3000_RESET_N (Si3000_RESET_N)
-        );
-        
-         
-    //=======================================================================
-    // SD Card
-    //=======================================================================
-        
-        wb_SD #(.SD_CLK_SLOW_SCK_RATIO (SD_CLK_SLOW_SCK_RATIO), 
-                .SD_CLK_FAST_SCK_RATIO (SD_CLK_FAST_SCK_RATIO), 
-                .BUFFER_SIZE_IN_BYTES (SD_BUFFER_SIZE_IN_BYTES),
-                .REG_ADDR_CSR      (SD_CSR_ADDR),
-                .REG_ADDR_CMD      (SD_CMD_ADDR),
-                .REG_ADDR_ARG0     (SD_ARG0_ADDR),
-                .REG_ADDR_ARG1     (SD_ARG1_ADDR),
-                .REG_ADDR_ARG2     (SD_ARG2_ADDR),
-                .REG_ADDR_ARG3     (SD_ARG3_ADDR),
-                .REG_ADDR_BUF_ADDR (SD_BUF_ADDR),
-                .REG_ADDR_DATA_IN  (SD_DATA_IN_ADDR),
-                .REG_ADDR_DATA_OUT (SD_DATA_OUT_ADDR)) wb_SD_i (.*,
+                .active_flag (flash_loader_active_flag),
+                .done_flag (flash_loader_done_flag),
+                .ping_busy (flash_loader_ping_busy),
+                .pong_busy (flash_loader_pong_busy),
                 
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (sd_data),
-                .ack_o (),
-                
-                .cs_n (sd_cs_n),
-                .spi_clk (sd_spi_clk),
-                .sd_data_out (sd_data_out),
-                .sd_data_in (sd_data_in)    
-        );
-            
-    //=======================================================================
-    // MAX 10 ADC
-    //=======================================================================
-             
-         wb_MAX10_ADC #(.REG_ADDR_DATA_HIGH (ADC_DATA_HIGH_ADDR),
-                        .REG_ADDR_DATA_LOW  (ADC_DATA_LOW_ADDR),
-                        .REG_ADDR_CSR (ADC_CSR_ADDR) ) ADC_i (.*,
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (ADC_data_out),
-                .ack_o (),
-                
-                .adc_pll_clock_clk (adc_pll_clock_clk),
-                .adc_pll_locked_export (adc_pll_locked_export),               
-                .adc_data_ready (adc_data_ready)
+                .flash_buffer_ping_state_out (flash_buffer_ping_state_out),
+                .flash_buffer_pong_state_out (flash_buffer_pong_state_out)
+                            
         );
          
          
@@ -620,51 +436,7 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .ack_o ()
         );     
          
-        
-    //=======================================================================
-    // I2C
-    //=======================================================================
-        wb_I2C #(.REG_ADDR_CSR (I2C_CSR_ADDR), 
-                 .REG_ADDR_DATA (I2C_ADDR_DATA_ADDR)) wb_I2C_i (.*,
-                
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (I2C_data_out),
-                .ack_o (),
-                
-                .sda_in (sda_in),
-                .scl_in (scl_in),
-                
-                .sda_out (sda_out),
-                .scl_out (scl_out),
-                
-                .irq (i2c_irq)
-        );
-    
-        
-    //=======================================================================
-    // PWM
-    //=======================================================================
-        wb_PWM #(.NUM_OF_PWM (NUM_OF_PWM), 
-                 .REG_ADDR_CSR (PWM_CSR_ADDR),
-                 .REG_ADDR_DATA (PWM_DATA_ADDR)) wb_PWM_i (.*,
-                
-                .stb_i (WB_WR_STB_I),
-                .we_i (WB_WR_WE_I),
-                .adr_wr_i (WB_WR_ADR_I),
-                .adr_rd_i (WB_RD_ADR_I),
-                .dat_i (WB_WR_DAT_I),
-                .dat_o (),
-                .ack_o (),
-                
-                .pwm_out (pwm_out) 
-        
-        );
-        
-        
+            
     //=======================================================================
     // Interrupt Controller
     //=======================================================================
@@ -695,11 +467,11 @@ module peripherals #(parameter FOR_SIM = 0) (
             .int_priority_mask (IP_data_out [NUM_OF_INT - 1 : 0]),
             .int_level1_pulse0 (7'b011_0101),
             
-            .int_pins ({codec_fsync_pulse,
-                        adc_data_ready,
+            .int_pins ({1'b0, // codec
+                        1'b0, // ADC
                         SCON_TI | SCON_RI,
                         timer1_trigger,
-                        i2c_irq, //==INTx_sync [1],
+                        INTx_sync [1],
                         timer0_trigger,
                         INTx_sync [0]}),
                         
@@ -753,12 +525,13 @@ module peripherals #(parameter FOR_SIM = 0) (
                 end else begin
                     jtag_uart_write_n_d1 <= jtag_uart_write_n;
                     jtag_uart_write_n_d2 <= jtag_uart_write_n_d1;
-                   WB_WR_DAT_I_d1       <= WB_WR_DAT_I;
+                    WB_WR_DAT_I_d1       <= WB_WR_DAT_I;
 
                 end
           
           end
-    
+          
+          
         generate
             if (FOR_SIM) begin : jtag_uart_gen
                 JTAG_UART jtag_uart_i (

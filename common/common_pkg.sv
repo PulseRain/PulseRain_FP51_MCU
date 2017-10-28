@@ -25,7 +25,7 @@
 
 package common_pkg;
     
-    parameter unsigned [7 : 0] MCU_REVISION = 8'hA0;
+    parameter unsigned [7 : 0] MCU_REVISION = 8'hB0;
     
     parameter int PC_BITWIDTH = 16;
     
@@ -37,7 +37,7 @@ package common_pkg;
     parameter int              NUM_OF_GP_RAM_CELLS  = 80;
     parameter int              ON_CHIP_DATA_RAM_SIZE_IN_BYTES = 8 * 1024;
     parameter int              XRAM_ADDR_OFFSET_IN_BYTES = 256;
-    parameter int              ON_CHIP_CODE_RAM_SIZE_IN_BYTES = 32 * 1024;
+    parameter int              ON_CHIP_CODE_RAM_SIZE_IN_BYTES = 24 * 1024;
     
     parameter int              DEFAULT_STACK_START = 127;
     
@@ -51,7 +51,6 @@ package common_pkg;
     parameter int              NUM_OF_UART  = 1;
     parameter int              NUM_OF_ADC   = 1;
     parameter int              NUM_OF_CODEC = 1;
-    parameter int              NUM_OF_PWM   = 6;
     parameter int              NUM_OF_INT   = NUM_OF_INTx + NUM_OF_TIMER + NUM_OF_UART + NUM_OF_ADC + NUM_OF_CODEC;
     
     //parameter int              CLASSIC_8051_OSC = 11059200;  // 11.0592 MHz
