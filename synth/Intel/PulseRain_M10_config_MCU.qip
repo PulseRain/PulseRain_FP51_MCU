@@ -1,0 +1,29 @@
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../common/common_pkg.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../peripherals/peripherals.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../source/PulseRain_M10_config_MCU.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/debug_counter_led/debug_counter_led.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/interrupt/interrupt.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/chip_ID/wb_MAX10_chip_ID.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/FASM_register/FASM_register.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/FASM_register/wb_register.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer_unit_pulse.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/wb_timer_8051.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/UART/FP51/Serial_8051.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/UART/FP51/UART_RX_FIFO.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/UART/FP51/wb_Serial_8051.sv"]
+
+
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "../../cores/Altera_unique_chip_ID/Altera_unique_chip_ID.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "../../cores/JTAG_UART/synthesis/JTAG_UART.qip"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) "../../submodules/FP51_fast_core/synth/Intel/FP51_fast_core.qip"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/CRC/source/CRC16_CCITT.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/block_memory/single_clk_ram.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/flash_loader/wb_flash_loader.sv"]
