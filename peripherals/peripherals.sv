@@ -387,7 +387,9 @@ module peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
     // Timer 0
     //=======================================================================
-        wb_timer_8051 
+          assign class_8051_unit_pulse = 0;
+		  
+		  wb_timer_8051 
           #(.REG_ADDR_TH (TH0_ADDR), .REG_ADDR_TL (TL0_ADDR)) timer0 (.*,
             .stb_i (WB_WR_STB_I),
             .we_i (WB_WR_WE_I),
@@ -398,8 +400,7 @@ module peripherals #(parameter FOR_SIM = 0) (
             .dat_o (TH0_TL0_data_out),
             .ack_o (),
     
-          //==  .class_8051_unit_pulse (class_8051_unit_pulse),
-            .class_8051_unit_pulse (1'b1),
+            .class_8051_unit_pulse (class_8051_unit_pulse),
             
             .TMOD_C_T (TMOD_C_T0),
             .TMOD_M1 (TMOD_T0M1),
@@ -436,7 +437,7 @@ module peripherals #(parameter FOR_SIM = 0) (
             .dat_o (TH1_TL1_data_out),
             .ack_o (),
     
-            .class_8051_unit_pulse (1'b1),
+            .class_8051_unit_pulse (class_8051_unit_pulse),
             
             .TMOD_C_T (TMOD_C_T1),
             .TMOD_M1 (TMOD_T1M1),
