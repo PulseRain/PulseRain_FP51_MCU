@@ -46,7 +46,7 @@ extern module peripherals #(parameter FOR_SIM = 0) (
         input wire                                  interrupt_return,
         output  logic unsigned [DATA_WIDTH - 1 : 0] int_addr,
         output  logic                               int_gen,
-        
+                
     //=======================================================================
     // Wishbone Interface (FASM synchronous RAM dual port model)
     //=======================================================================
@@ -72,49 +72,13 @@ extern module peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
-    
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
         
     //=======================================================================
     // Debug LED
     //=======================================================================
         output wire                                 debug_led,
         output wire                                 debug_counter_pulse,
-    
-    //=======================================================================
-    // M23XX1024
-    //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
         
-     //=======================================================================
-    // Si3000
-    //=======================================================================
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,
-        output  wire                                Si3000_RESET_N,
-        
-    //=======================================================================
-    // SD Card
-    //=======================================================================
-        
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
-        
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
         
     //=======================================================================
     // I2C
@@ -125,12 +89,13 @@ extern module peripherals #(parameter FOR_SIM = 0) (
         
         output wire                                  sda_out,
         output wire                                  scl_out,
-    
+        
     //=======================================================================
     // PWM
     //=======================================================================
-        output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out
+        output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     
         
-    );
+);
+
 
 `endif

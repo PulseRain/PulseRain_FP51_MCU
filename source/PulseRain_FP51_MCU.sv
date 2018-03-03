@@ -61,8 +61,6 @@ module PulseRain_FP51_MCU
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
         
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
         
     //=======================================================================
     // Ports
@@ -103,40 +101,6 @@ module PulseRain_FP51_MCU
         output wire                                 debug_led,
         output wire                                 debug_counter_pulse,
         
-    //=======================================================================
-    // M23XX1024
-    //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
-        
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-            
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,  
-        output  wire                                Si3000_RESET_N,
-        
-    //=======================================================================
-    // SD Card
-    //=======================================================================
-        
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
-        
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
         
     //=======================================================================
     // I2C
@@ -276,33 +240,9 @@ module PulseRain_FP51_MCU
         
             .UART_RXD (UART_RXD),
             .UART_TXD (UART_TXD),
-            
-            .UART_AUX_RXD (UART_AUX_RXD),
-            .UART_AUX_TXD (UART_AUX_TXD),
 			 
             .debug_led (debug_led),
             .debug_counter_pulse (debug_counter_pulse),
-            
-            .mem_so (mem_so),
-            .mem_si (mem_si),
-            .mem_hold_n (mem_hold_n),
-            .mem_cs_n (mem_cs_n),
-            .mem_sck (mem_sck),
-            
-            .Si3000_SDO (Si3000_SDO),
-            .Si3000_SDI (Si3000_SDI),
-            .Si3000_SCLK (Si3000_SCLK),
-            .Si3000_MCLK (Si3000_MCLK),
-            .Si3000_FSYNC_N (Si3000_FSYNC_N),
-            .Si3000_RESET_N (Si3000_RESET_N),
-            
-            .sd_cs_n     (sd_cs_n),
-            .sd_spi_clk  (sd_spi_clk),
-            .sd_data_out (sd_data_out),
-            .sd_data_in  (sd_data_in),          
-            
-            .adc_pll_clock_clk (adc_pll_clock_clk),
-            .adc_pll_locked_export (adc_pll_locked_export),
             
             .sda_in (sda_in),
             .scl_in (scl_in),

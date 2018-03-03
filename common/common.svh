@@ -137,7 +137,7 @@ extern module PulseRain_FP51_MCU
         
         output wire                                 inst_mem_re_enable_out,
         output wire unsigned [31 : 0]               inst_mem_data_out,
-                
+        
     //=======================================================================
     // External Interrupt
     //=======================================================================
@@ -150,8 +150,6 @@ extern module PulseRain_FP51_MCU
         input wire                                  UART_RXD,
         output wire                                 UART_TXD,
         
-        input wire                                  UART_AUX_RXD,
-        output wire                                 UART_AUX_TXD,
         
     //=======================================================================
     // Ports
@@ -165,13 +163,13 @@ extern module PulseRain_FP51_MCU
     // Debug
     //=======================================================================
         
-        
         input wire                                  pause,
         input wire                                  break_on,
         input wire unsigned [PC_BITWIDTH - 1 : 0]   break_addr_A,
         input wire unsigned [PC_BITWIDTH - 1 : 0]   break_addr_B,
+        
         input wire                                  run_pulse,      
-                        
+                                
         output logic                                debug_stall,
         output wire unsigned [PC_BITWIDTH - 1 : 0]  debug_PC,
                 
@@ -185,48 +183,13 @@ extern module PulseRain_FP51_MCU
         input wire unsigned                                     debug_wr_indirect1_direct0,
         input wire unsigned [DATA_WIDTH - 1 : 0]                debug_data_write_data,
         
-        
-        
         output wire                                 debug_read_data_enable_out,
         output wire unsigned [DATA_WIDTH - 1 : 0]   debug_read_data_out,
         output wire                                 timer_pulse_out,
+        
         output wire                                 debug_led,
         output wire                                 debug_counter_pulse,
         
-    //=======================================================================
-    // M23XX1024
-    //=======================================================================
-        input   wire                                mem_so,
-        output  wire                                mem_si,
-        output  wire                                mem_hold_n,
-        output  wire                                mem_cs_n, 
-        output  wire                                mem_sck,
-            
-    //=======================================================================
-    // Si3000
-    //=======================================================================
-            
-        input   wire                                Si3000_SDO,
-        output  wire                                Si3000_SDI,
-        input   wire                                Si3000_SCLK,
-        output  wire                                Si3000_MCLK,
-        input   wire                                Si3000_FSYNC_N,  
-        output  wire                                Si3000_RESET_N, 
-        
-    //=======================================================================
-    // SD Card
-    //=======================================================================
-        
-        output wire                                 sd_cs_n,
-        output wire                                 sd_spi_clk,
-        input  wire                                 sd_data_out,
-        output wire                                 sd_data_in,         
-    
-    //=======================================================================
-    // MAX10 ADC
-    //=======================================================================
-        input   wire                                adc_pll_clock_clk,                   
-        input   wire                                adc_pll_locked_export,
         
     //=======================================================================
     // I2C
@@ -238,12 +201,13 @@ extern module PulseRain_FP51_MCU
         output wire                                 sda_out,
         output wire                                 scl_out,
         
-   //=======================================================================
+    //=======================================================================
     // PWM
     //=======================================================================
-        output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out       
- 
+        output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out     
+            
 );
+
     
     
     
