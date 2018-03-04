@@ -29,7 +29,7 @@
     parameter int     SD_BUFFER_SIZE_IN_BYTES = 1024;
 
 
-extern module peripherals #(parameter FOR_SIM = 0) (
+externmodule peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
     // clock / reset
     //=======================================================================
@@ -91,11 +91,17 @@ extern module peripherals #(parameter FOR_SIM = 0) (
         output wire                                  scl_out,
         
     //=======================================================================
+    // pins from the incremental rotary encoder 
+    //=======================================================================
+        input   wire                                encoder_clk,
+        input   wire                                encoder_dt,
+        input   wire                                encoder_sw,    
+    
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     
         
 );
-
 
 `endif

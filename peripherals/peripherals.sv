@@ -90,6 +90,13 @@ module peripherals #(parameter FOR_SIM = 0) (
         output wire                                  scl_out,
         
     //=======================================================================
+    // pins from the incremental rotary encoder 
+    //=======================================================================
+        input   wire                                encoder_clk,
+        input   wire                                encoder_dt,
+        input   wire                                encoder_sw,    
+    
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     
@@ -106,6 +113,7 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire unsigned [DATA_WIDTH - 1 : 0]          TH0_TL0_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          TH1_TL1_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          uart_reg_data_out;
+        wire unsigned [DATA_WIDTH - 1 : 0]          rotary_encoder_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          debug_counter_led_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          chip_ID_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          I2C_data_out;
@@ -295,8 +303,8 @@ module peripherals #(parameter FOR_SIM = 0) (
     // Timer 0
     //=======================================================================
           assign class_8051_unit_pulse = 0;
-		  
-		  wb_timer_8051 
+          
+          wb_timer_8051 
           #(.REG_ADDR_TH (TH0_ADDR), .REG_ADDR_TL (TL0_ADDR)) timer0 (.*,
             .stb_i (WB_WR_STB_I),
             .we_i (WB_WR_WE_I),
@@ -381,6 +389,32 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .UART_TXD (UART_TXD),
                 .SCON_TI (SCON_TI),
                 .SCON_RI (SCON_RI));
+                
+                
+                
+    //=======================================================================
+    // Rotary Encoder
+    //=======================================================================
+        wb_rotary_encoder #(.REG_ADDR_COUNTER (ROTARY_ENCODER_ADDR), 
+                            .COUNTER_BITS (8), 
+                            .DEBOUNCE_DELAY (100000), 
+                            .COUNTER_CLK_DECREASE (1) ) rotary_encoder_i (.*,
+                            
+                .stb_i (WB_WR_STB_I),
+                .we_i (WB_WR_WE_I),
+                .adr_wr_i (WB_WR_ADR_I),
+                .adr_rd_i (WB_RD_ADR_I),
+                .dat_i (WB_WR_DAT_I),
+                .dat_o (rotary_encoder_data_out),
+                .ack_o (),
+                
+                .encoder_clk (encoder_clk),
+                .encoder_dt (encoder_dt),
+                .encoder_sw (encoder_sw));         
+                
+                
+                
+                
     /*
          
     //=======================================================================
