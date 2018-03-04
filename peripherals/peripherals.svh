@@ -14,6 +14,7 @@
 `include "Serial_8051.svh"
 `include "I2C.svh"
 `include "PWM.svh"
+`include "rotary_encoder.svh"
 
 
     
@@ -29,7 +30,7 @@
     parameter int     SD_BUFFER_SIZE_IN_BYTES = 1024;
 
 
-externmodule peripherals #(parameter FOR_SIM = 0) (
+extern module peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
     // clock / reset
     //=======================================================================

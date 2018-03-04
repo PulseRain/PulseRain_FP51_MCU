@@ -222,6 +222,9 @@ module peripherals #(parameter FOR_SIM = 0) (
                     WB_RD_DAT_O = I2C_data_out;
                 end
                 
+                ROTARY_ENCODER_ADDR : begin
+                    WB_RD_DAT_O = rotary_encoder_data_out;
+                end                
                 
                 default : begin
                     WB_RD_DAT_O = 0;
@@ -396,7 +399,7 @@ module peripherals #(parameter FOR_SIM = 0) (
     // Rotary Encoder
     //=======================================================================
         wb_rotary_encoder #(.REG_ADDR_COUNTER (ROTARY_ENCODER_ADDR), 
-                            .COUNTER_BITS (8), 
+                            .COUNTER_BITS (3), 
                             .DEBOUNCE_DELAY (100000), 
                             .COUNTER_CLK_DECREASE (1) ) rotary_encoder_i (.*,
                             

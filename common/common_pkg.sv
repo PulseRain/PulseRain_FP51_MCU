@@ -25,7 +25,7 @@
 
 package common_pkg;
     
-    parameter unsigned [7 : 0] MCU_REVISION = 8'hA0;
+    parameter unsigned [7 : 0] MCU_REVISION = 8'hC0;
     
     parameter int PC_BITWIDTH = 16;
     
