@@ -113,6 +113,13 @@ module PulseRain_FP51_MCU
         output wire                                 scl_out,
         
     //=======================================================================
+    // Rotary Encoder
+    //=======================================================================
+        input   wire                                encoder_clk,
+        input   wire                                encoder_dt,
+        input   wire                                encoder_sw,   
+        
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out     
@@ -240,7 +247,7 @@ module PulseRain_FP51_MCU
         
             .UART_RXD (UART_RXD),
             .UART_TXD (UART_TXD),
-			 
+             
             .debug_led (debug_led),
             .debug_counter_pulse (debug_counter_pulse),
             
@@ -249,6 +256,11 @@ module PulseRain_FP51_MCU
             
             .sda_out (sda_out),
             .scl_out (scl_out),
+            
+            .encoder_clk (encoder_clk),
+            .encoder_dt (encoder_dt),
+            .encoder_sw (encoder_sw), 
+            
             .pwm_out (pwm_out)
             
            );

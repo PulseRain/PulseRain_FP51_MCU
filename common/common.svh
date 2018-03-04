@@ -202,7 +202,7 @@ extern module PulseRain_FP51_MCU
         output wire                                 scl_out,
         
     //=======================================================================
-    // rotary encoder
+    // Rotary Encoder
     //=======================================================================
      	input   wire                                encoder_clk,
         input   wire                                encoder_dt,
