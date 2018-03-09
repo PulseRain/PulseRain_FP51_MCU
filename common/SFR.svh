@@ -71,7 +71,10 @@ parameter unsigned [DATA_WIDTH - 1 : 0] I2C_ADDR_DATA_ADDR  = 8'hD2;
 parameter unsigned [DATA_WIDTH - 1 : 0] PWM_CSR_ADDR        = 8'hD3;
 parameter unsigned [DATA_WIDTH - 1 : 0] PWM_DATA_ADDR       = 8'hD4;
 
-parameter unsigned [DATA_WIDTH - 1 : 0] ROTARY_ENCODER_ADDR   = 8'hD5;
+parameter unsigned [DATA_WIDTH - 1 : 0] PS2_CSR_ADDR    = 8'hD5;
+parameter unsigned [DATA_WIDTH - 1 : 0] PS2_DATA_ADDR   = 8'hD6;
+
+
 
 parameter unsigned [DATA_WIDTH - 1 : 0] SD_CSR_ADDR      = 8'hD7;
 parameter unsigned [DATA_WIDTH - 1 : 0] SD_CMD_ADDR      = 8'hD8;
@@ -125,12 +128,13 @@ parameter unsigned [DATA_WIDTH - 1 : 0] SRAM_ADDRESS1_ADDR    = 8'hFC;
 parameter unsigned [DATA_WIDTH - 1 : 0] SRAM_ADDRESS0_ADDR    = 8'hFD;
 parameter unsigned [DATA_WIDTH - 1 : 0] SRAM_CSR_ADDR         = 8'hFE;
 
+parameter unsigned [DATA_WIDTH - 1 : 0] ROTARY_ENCODER_ADDR   = 8'hFF;
 
 
 
 parameter integer IE_GLOBAL_INT_ENABLE_INDEX         = 7;
 parameter integer IE_ENABLE_CODEC_INDEX              = 6;
-parameter integer IE_ENABLE_ADC_INDEX                = 5;
+parameter integer IE_ENABLE_PS2_INDEX                = 5;
 parameter integer IE_ENABLE_SERIAL_INT_INDEX         = 4;
 parameter integer IE_ENABLE_TIMER1_INT_INDEX         = 3;
 parameter integer IE_ENABLE_EXT_INT1_INDEX           = 2;

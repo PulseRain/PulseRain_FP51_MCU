@@ -97,6 +97,12 @@ module peripherals #(parameter FOR_SIM = 0) (
         input   wire                                encoder_sw,    
     
     //=======================================================================
+    // PS2
+    //=======================================================================
+        input   wire                                ps2_clk,
+        input   wire                                ps2_dat,
+                
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     
@@ -114,6 +120,9 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire unsigned [DATA_WIDTH - 1 : 0]          TH1_TL1_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          uart_reg_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          rotary_encoder_data_out;
+        wire unsigned [DATA_WIDTH - 1 : 0]          ps2_data_out;
+        wire                                        ps2_int;
+        
         wire unsigned [DATA_WIDTH - 1 : 0]          debug_counter_led_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          chip_ID_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          I2C_data_out;
@@ -224,7 +233,16 @@ module peripherals #(parameter FOR_SIM = 0) (
                 
                 ROTARY_ENCODER_ADDR : begin
                     WB_RD_DAT_O = rotary_encoder_data_out;
-                end                
+                end             
+                
+                PS2_CSR_ADDR : begin
+                    WB_RD_DAT_O = ps2_data_out;
+                end
+                
+                PS2_DATA_ADDR : begin
+                    WB_RD_DAT_O = ps2_data_out;
+                end
+
                 
                 default : begin
                     WB_RD_DAT_O = 0;
@@ -416,7 +434,31 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .encoder_sw (encoder_sw));         
                 
                 
+    //=======================================================================
+    // PS2
+    //=======================================================================
+        wb_PS2 #(.REG_ADDR_CSR (PS2_CSR_ADDR), .REG_ADDR_DATA (PS2_DATA_ADDR)) wb_PS2_i (.*,
+                .stb_i (WB_WR_STB_I),
+                .we_i (WB_WR_WE_I),
+                .adr_wr_i (WB_WR_ADR_I),
+                .adr_rd_i (WB_RD_ADR_I),
+                .dat_i (WB_WR_DAT_I),
+
+                .dat_o (ps2_data_out),
+                .ack_o (),
                 
+                .ps2_clk (ps2_clk),
+                .ps2_dat (ps2_dat),
+                
+                .data_available (ps2_int));
+
+           
+               
+               
+               
+               
+               
+               
                 
     /*
          
@@ -498,7 +540,7 @@ module peripherals #(parameter FOR_SIM = 0) (
             .global_int_enable (IE [IE_GLOBAL_INT_ENABLE_INDEX]),
             
             .int_enable_mask ({IE [IE_ENABLE_CODEC_INDEX],
-                               IE [IE_ENABLE_ADC_INDEX], 
+                               IE [IE_ENABLE_PS2_INDEX], 
                                IE [IE_ENABLE_SERIAL_INT_INDEX],
                                IE [IE_ENABLE_TIMER1_INT_INDEX],
                                IE [IE_ENABLE_EXT_INT1_INDEX],
@@ -509,7 +551,7 @@ module peripherals #(parameter FOR_SIM = 0) (
             .int_level1_pulse0 (7'b011_0101),
             
             .int_pins ({1'b0, // codec_fsync_pulse,
-                        1'b0, // adc_data_ready,
+                        ps2_int, 
                         SCON_TI | SCON_RI,
                         timer1_trigger,
                         1'b0, // i2c_irq, //==INTx_sync [1],
