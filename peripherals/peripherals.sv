@@ -101,6 +101,15 @@ module peripherals #(parameter FOR_SIM = 0) (
     //=======================================================================
         input   wire                                ps2_clk,
         input   wire                                ps2_dat,
+        
+    //=======================================================================
+    // LCD, 4 line serial 
+    //=======================================================================
+         output  wire                               lcd_rst,
+         output  wire                               lcd_csx,
+         output  wire                               lcd_dcx, 
+         output  wire                               lcd_scl,
+         output  wire                               lcd_sda,
                 
     //=======================================================================
     // PWM
@@ -126,6 +135,7 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire unsigned [DATA_WIDTH - 1 : 0]          debug_counter_led_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          chip_ID_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          I2C_data_out;
+        wire unsigned [DATA_WIDTH - 1 : 0]          LCD_data_out;
         
         
         wire                                        TMOD_GATE1, TMOD_C_T1, TMOD_T1M1;
@@ -242,7 +252,10 @@ module peripherals #(parameter FOR_SIM = 0) (
                 PS2_DATA_ADDR : begin
                     WB_RD_DAT_O = ps2_data_out;
                 end
-
+                
+                LCD_CSR_ADDR : begin
+                    WB_RD_DAT_O = LCD_data_out;
+                end
                 
                 default : begin
                     WB_RD_DAT_O = 0;
@@ -453,14 +466,6 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .data_available (ps2_int));
 
            
-               
-               
-               
-               
-               
-               
-                
-    /*
          
     //=======================================================================
     // unique chip id
@@ -475,6 +480,29 @@ module peripherals #(parameter FOR_SIM = 0) (
                 .ack_o ()
         );     
          
+   
+   
+    //=======================================================================
+    // LCD
+    //=======================================================================
+        wb_LCD #(.REG_ADDR_CSR (LCD_CSR_ADDR), .REG_ADDR_DATA (LCD_DATA_ADDR)) wb_LCD_i (.*,
+        
+                .stb_i (WB_WR_STB_I),
+                .we_i (WB_WR_WE_I),
+                .adr_wr_i (WB_WR_ADR_I),
+                .adr_rd_i (WB_RD_ADR_I),
+                .dat_i (WB_WR_DAT_I),
+                .dat_o (LCD_data_out),
+                .ack_o (),
+
+                .rst (lcd_rst),
+                .csx (lcd_csx),
+                .dcx (lcd_dcx),
+                .scl (lcd_scl),
+                .sda (lcd_sda)
+        );
+
+        
         
     //=======================================================================
     // I2C
@@ -519,7 +547,7 @@ module peripherals #(parameter FOR_SIM = 0) (
         
         );
         
-      */  
+        
     //=======================================================================
     // Interrupt Controller
     //=======================================================================

@@ -105,6 +105,16 @@ extern module peripherals #(parameter FOR_SIM = 0) (
         input   wire                                ps2_dat,
     
     //=======================================================================
+    // LCD, 4 line serial 
+    //=======================================================================
+     	output  wire                                lcd_rst,
+     	output  wire                                lcd_csx,
+     	output  wire                                lcd_dcx, 
+     	output  wire                                lcd_scl,
+     	output  wire                                lcd_sda,
+
+                
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]    pwm_out     

@@ -31,7 +31,11 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/rotary_encoder/wb_rotary_encoder.sv"]
 
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/PS2/ps2_keyboard.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/PS2/PS2_FIFO.sv"]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/PS2/wb_PS2.sv"]
+
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/LCD/ST7735R.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/LCD/wb_LCD.sv"]
 
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer_unit_pulse.sv"]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer.sv"]

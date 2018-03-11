@@ -49,10 +49,10 @@ package common_pkg;
     parameter int              NUM_OF_INTx  = 2;
     parameter int              NUM_OF_TIMER = 2;
     parameter int              NUM_OF_UART  = 1;
-    parameter int              NUM_OF_ADC   = 1;
+    parameter int              NUM_OF_PS2   = 1;
     parameter int              NUM_OF_CODEC = 1;
-    parameter int              NUM_OF_PWM   = 6;
-    parameter int              NUM_OF_INT   = NUM_OF_INTx + NUM_OF_TIMER + NUM_OF_UART + NUM_OF_ADC + NUM_OF_CODEC;
+    parameter int              NUM_OF_PWM   = 1;
+    parameter int              NUM_OF_INT   = NUM_OF_INTx + NUM_OF_TIMER + NUM_OF_UART + NUM_OF_PS2 + NUM_OF_CODEC;
     
     //parameter int              CLASSIC_8051_OSC = 11059200;  // 11.0592 MHz
     //parameter int              ACTUAL_CLK_RATE  = 100454400; // 100.4544 MHz

@@ -126,11 +126,19 @@ module PulseRain_FP51_MCU
         input   wire                                ps2_dat,
         
     //=======================================================================
+    // LCD, 4 line serial 
+    //=======================================================================
+        output  wire                                lcd_rst,
+        output  wire                                lcd_csx,
+        output  wire                                lcd_dcx, 
+        output  wire                                lcd_scl,
+        output  wire                                lcd_sda,
+    
+    //=======================================================================
     // PWM
     //=======================================================================
         output wire unsigned [NUM_OF_PWM - 1 : 0]   pwm_out     
-             
-            
+                         
 );
 
     //=======================================================================
@@ -266,6 +274,12 @@ module PulseRain_FP51_MCU
             .encoder_clk (encoder_clk),
             .encoder_dt (encoder_dt),
             .encoder_sw (encoder_sw), 
+            
+            .lcd_rst (lcd_rst),
+            .lcd_csx (lcd_csx),
+            .lcd_dcx (lcd_dcx),
+            .lcd_scl (lcd_scl),
+            .lcd_sda (lcd_sda),
             
             .pwm_out (pwm_out)
             

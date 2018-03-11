@@ -214,6 +214,17 @@ extern module PulseRain_FP51_MCU
         input   wire                                ps2_clk,
         input   wire                                ps2_dat,
         
+        
+    //=======================================================================
+    // LCD, 4 line serial 
+    //=======================================================================
+     	output  wire                                lcd_rst,
+     	output  wire                                lcd_csx,
+     	output  wire                                lcd_dcx, 
+     	output  wire                                lcd_scl,
+     	output  wire                                lcd_sda,
+
+        
     //=======================================================================
     // PWM
     //=======================================================================
