@@ -37,6 +37,8 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/LCD/ST7735R.sv"]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/LCD/wb_LCD.sv"]
 
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/flash_read/wb_flash_read.sv"]
+
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer_unit_pulse.sv"]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/timer.sv"]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "../../submodules/PulseRain_rtl_lib/timer/FP51/wb_timer_8051.sv"]

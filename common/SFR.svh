@@ -59,6 +59,8 @@ parameter unsigned [DATA_WIDTH - 1 : 0] DEBUG_LED_ADDR  = 8'hC0;
 parameter unsigned [DATA_WIDTH - 1 : 0] LCD_CSR_ADDR  = 8'hC1;
 parameter unsigned [DATA_WIDTH - 1 : 0] LCD_DATA_ADDR = 8'hC2;
 
+parameter unsigned [DATA_WIDTH - 1 : 0] FLASH_CSR_ADDR  = 8'hC3;
+parameter unsigned [DATA_WIDTH - 1 : 0] FLASH_DATA_ADDR = 8'hC4;
 
 parameter unsigned [DATA_WIDTH - 1 : 0] PSW_ADDR    = 8'hD0;
 parameter integer PSW_CY_INDEX                      = 7;

@@ -133,6 +133,14 @@ module PulseRain_FP51_MCU
         output  wire                                lcd_dcx, 
         output  wire                                lcd_scl,
         output  wire                                lcd_sda,
+        
+    //=======================================================================
+    // flash read
+    //=======================================================================
+        output wire                                 flash_read_req,
+        output wire unsigned [23 : 0]               flash_addr_read,
+        input  wire                                 flash_read_en_in,
+        input  wire unsigned [7 : 0]                flash_byte_in,
     
     //=======================================================================
     // PWM

@@ -110,6 +110,14 @@ module peripherals #(parameter FOR_SIM = 0) (
          output  wire                               lcd_dcx, 
          output  wire                               lcd_scl,
          output  wire                               lcd_sda,
+         
+    //=======================================================================
+    // flash read
+    //=======================================================================
+         output wire                                flash_read_req,
+         output wire unsigned [23 : 0]              flash_addr_read,
+         input  wire                                flash_read_en_in,
+         input  wire unsigned [7 : 0]               flash_byte_in,
                 
     //=======================================================================
     // PWM
@@ -136,7 +144,7 @@ module peripherals #(parameter FOR_SIM = 0) (
         wire unsigned [DATA_WIDTH - 1 : 0]          chip_ID_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          I2C_data_out;
         wire unsigned [DATA_WIDTH - 1 : 0]          LCD_data_out;
-        
+        wire unsigned [DATA_WIDTH - 1 : 0]          flash_read_data_out;
         
         wire                                        TMOD_GATE1, TMOD_C_T1, TMOD_T1M1;
         wire                                        TMOD_T1M0, TMOD_GATE0, TMOD_C_T0;
@@ -255,6 +263,14 @@ module peripherals #(parameter FOR_SIM = 0) (
                 
                 LCD_CSR_ADDR : begin
                     WB_RD_DAT_O = LCD_data_out;
+                end
+                
+                FLASH_CSR_ADDR : begin
+                    WB_RD_DAT_O = flash_read_data_out;
+                end
+                
+                FLASH_DATA_ADDR : begin
+                    WB_RD_DAT_O = flash_read_data_out;
                 end
                 
                 default : begin
@@ -547,6 +563,26 @@ module peripherals #(parameter FOR_SIM = 0) (
         
         );
         
+        
+    //=======================================================================
+    // flash read
+    //=======================================================================
+        
+        wb_flash_read #(.REG_ADDR_CSR (FLASH_CSR_ADDR), .REG_ADDR_DATA (FLASH_DATA_ADDR)) wb_flash_read_i(.*,
+                .stb_i (WB_WR_STB_I),
+                .we_i (WB_WR_WE_I),
+                .adr_wr_i (WB_WR_ADR_I),
+                .adr_rd_i (WB_RD_ADR_I),
+                .dat_i (WB_WR_DAT_I),
+                .dat_o (flash_read_data_out),
+                .ack_o (),
+
+                .flash_read_req (flash_read_req),
+                .flash_addr_read (flash_addr_read),
+                .flash_read_en_in (flash_read_en_in),
+                .flash_byte_in (flash_byte_in)
+        );
+
         
     //=======================================================================
     // Interrupt Controller
