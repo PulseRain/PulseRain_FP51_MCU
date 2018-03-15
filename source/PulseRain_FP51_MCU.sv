@@ -289,6 +289,11 @@ module PulseRain_FP51_MCU
             .lcd_scl (lcd_scl),
             .lcd_sda (lcd_sda),
             
+            .flash_read_req (flash_read_req),
+            .flash_addr_read (flash_addr_read),
+            .flash_read_en_in (flash_read_en_in),
+            .flash_byte_in (flash_byte_in),
+        
             .pwm_out (pwm_out)
             
            );
