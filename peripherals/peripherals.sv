@@ -446,7 +446,7 @@ module peripherals #(parameter FOR_SIM = 0) (
     // Rotary Encoder
     //=======================================================================
         wb_rotary_encoder #(.REG_ADDR_COUNTER (ROTARY_ENCODER_ADDR), 
-                            .COUNTER_BITS (5), 
+                            .COUNTER_BITS (8), 
                             .DEBOUNCE_DELAY (100000), 
                             .COUNTER_CLK_DECREASE (1) ) rotary_encoder_i (.*,
                             
