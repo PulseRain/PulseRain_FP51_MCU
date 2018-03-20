@@ -21,8 +21,8 @@ set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -nam
 set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_VERSION "MTYuMQ=="
 set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_DESCRIPTION "VGhlIEFsdGVyYSBVbmlxdWUgQ2hpcCBJRCBtZWdhZnVuY3Rpb24gcHJvdmlkZXMgZmVhdHVyZSB0byBhY3F1aXJlIHRoZSB1bmlxdWUgY2hpcCBJRCBvZiBGUEdBLg=="
 set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_PARAMETER "REVWSUNFX0ZBTUlMWQ==::TUFYIDEw::REVWSUNFX0ZBTUlMWQ=="
-set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_PARAMETER "SURfVkFMVUU=::MTg0NDY3NDQwNzM3MDk1NTE2MTU=::UGxlYXNlIGVudGVyIHRoZSBkZXNpcmVkIFVuaXF1ZSBDaGlwIElEIGluIEhleGFkZWNpbWFsIGZvciBzaW11bGF0aW9uOg=="
-set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_PARAMETER "SURfVkFMVUVfU1RS::MDAwMDAwMDBmZmZmZmZmZg==::SURfVkFMVUVfU1RS"
+set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_PARAMETER "SURfVkFMVUU=::MTMxMTc2ODQ2NzczMjE1NTYxMw==::UGxlYXNlIGVudGVyIHRoZSBkZXNpcmVkIFVuaXF1ZSBDaGlwIElEIGluIEhleGFkZWNpbWFsIGZvciBzaW11bGF0aW9uOg=="
+set_global_assignment -entity "altchip_id" -library "Altera_unique_chip_ID" -name IP_COMPONENT_PARAMETER "SURfVkFMVUVfU1RS::MDAwMDAwMDBhYWJiY2NkZA==::SURfVkFMVUVfU1RS"
 
 set_global_assignment -library "Altera_unique_chip_ID" -name VERILOG_FILE [file join $::quartus(qip_path) "Altera_unique_chip_ID.v"]
 set_global_assignment -library "Altera_unique_chip_ID" -name VERILOG_FILE [file join $::quartus(qip_path) "Altera_unique_chip_ID/altchip_id.v"]
